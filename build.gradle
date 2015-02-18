@@ -1,0 +1,73 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+    maven {url "http://repo.spring.io/snapshot"}
+    maven {url "http://repo.spring.io/milestone"}
+    maven {
+      name 'JFrog OSS snapshot repo'
+      url 'https://oss.jfrog.org/oss-snapshot-local/'
+    }
+  }
+  dependencies {
+    classpath(
+        "org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE",
+        "org.springframework:springloaded:1.2.0.RELEASE",
+        )
+  }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'groovy'
+apply plugin: 'wrapper'
+
+springBoot {
+  applyExcludeRules = true
+}
+ext {
+  springBootVersion = '1.2.1.RELEASE'
+  springVersion = '4.1.4.RELEASE'
+  springSecurityVersion = '4.0.0.RC1'
+  groovyVersion = '2.4.0'
+  spockVersion = '1.0-groovy-2.3-SNAPSHOT'
+  jvmTarget = 1.8
+}
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+
+repositories {
+  mavenLocal()
+  jcenter()
+  maven {url "http://repo.spring.io/snapshot"}
+  maven {url "http://repo.spring.io/milestone"}
+  maven {url "http://repo.spring.io/libs-snapshot"}
+  maven {url "http://oss.sonatype.org/content/repositories/snapshots/"}
+}
+dependencies {
+  compile("org.codehaus.groovy:groovy:${project.ext.groovyVersion}")
+  compile("org.springframework.boot:spring-boot-starter-actuator")
+  compile("org.yaml:snakeyaml:1.14")
+  compile("com.fasterxml.jackson.core:jackson-databind:2.4.4")
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+  compile("org.springframework.boot:spring-boot-starter-jetty")
+
+  compile "org.springframework.security:spring-security-core:${project.ext.springSecurityVersion}"
+  compile "org.springframework.security:spring-security-messaging:${project.ext.springSecurityVersion}"
+  compile "org.springframework.security:spring-security-config:${project.ext.springSecurityVersion}"
+  compile "org.springframework.security:spring-security-web:${project.ext.springSecurityVersion}"
+  compile(
+      "org.springframework.security:spring-security-cas:${project.ext.springSecurityVersion}"
+  ) {
+    exclude group: 'velocity', module: 'velocity'
+  }
+
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("org.spockframework:spock-core:${project.ext.spockVersion}")
+  testCompile("org.spockframework:spock-spring:${project.ext.spockVersion}")
+  testCompile("org.spockframework:spock-report:${project.ext.spockVersion}")
+  testCompile(
+      "org.springframework.security:spring-security-test:${project.ext.springSecurityVersion}"
+  )
+}
